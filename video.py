@@ -21,6 +21,9 @@ class VideoCapture:
         self.video = cv2.VideoCapture(*args, **kwargs)
         self.stoppedIteration = False
 
+    def read(self):
+        return self.video.read()
+
     ## Context manager
     def __enter__(self):
         return self
