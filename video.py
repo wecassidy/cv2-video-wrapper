@@ -115,3 +115,26 @@ class VideoCapture(cv2.VideoCapture):
     @shape.setter
     def set_shape(self, shape):
         self.width, self.height = shape
+
+
+class VideoWriter(cv2.VideoWriter):
+    """
+    Extend cv2.VideoWriter to provide a context manager.
+    """
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.release()
+        return False
+
+
+# Test: stream video from a webcam to window
+if __name__ == "__main__":
+    with VideoCapture(0) as webcam:
+        for frame in webcam:
+            cv2.imshow("Frame", frame)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
+    cv2.destroyAllWindows()
