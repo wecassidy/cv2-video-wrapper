@@ -10,6 +10,17 @@ class VideoCapture(cv2.VideoCapture):
     """
     Extend cv2.VideoCapture so that it can be used as a context
     manager and an iterator over the frames of the video.
+
+    Context manager
+    ---------------
+
+    Ensures release() is called in case an error occurs
+
+    Iterator
+    --------
+
+    Returns frames from read() as long as the capture is opened and
+    the return value of read is Ture.
     """
 
     def __init__(self, *args, **kwargs):
