@@ -37,7 +37,7 @@ Code at [video.py:43-57](video.py#L43-L57) (`VideoCapture.__iter__` and `VideoCa
 30.0
 ```
 
-The various properties accessed with `get(cv2.CAP_PROP_PROPERTY_NAME)` are mapped to `VideoCapture.property_name`. For convenience, `width` and `height` are provided as synonyms for `frame_width` and `frame_height`, respectively; and `shape` behaves like NumPy's shape and returns a `(width, height)` tuple.
+The various properties accessed with `get(cv2.CAP_PROP_PROPERTY_NAME)` are mapped to `VideoCapture.property_name`. For convenience, `width` and `height` are provided as synonyms for `frame_width` and `frame_height`, respectively; and `shape` returns a `(width, height)` tuple.
 
 Code at [video.py:60-77](video.py#L60-L77) (`VideoCapture.__getattr__` and `VideoCapture.__setattr__`, with the properties following those two methods handling special cases).
 
