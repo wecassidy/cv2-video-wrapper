@@ -1,13 +1,27 @@
 import cv2
 
+"""
+Wrappers around the OpenCV VideoCapture and VideoWriter classes to give
+them a more Pythonic interface
+"""
 
-class VideoReader:
-    """Wrapper around cv2.VideoCapture so that it can be used as a context manager"""
 
-    def __init__(self, filename):
-        self.video = cv2.VideoCapture(filename)
+class VideoCapture:
+    """
+    Wrapper around cv2.VideoCapture so that it can be used as a
+    context manager. The underlying cv2.VideoCapture is accessible
+    through VideoCapture.video.
+    """
+
+    def __init__(self, *args, **kwargs):
+        """
+        Set up the VideoCapture. All parameters are forwarded to the
+        OpenCV VideoCapture object.
+        """
+        self.video = cv2.VideoCapture(*args, **kwargs)
         self.stoppedIteration = False
 
+    ## Context manager
     def __enter__(self):
         return self
 
@@ -15,6 +29,7 @@ class VideoReader:
         self.video.release()
         return False
 
+    ## Iterable
     def __iter__(self):
         return self
 
@@ -23,7 +38,7 @@ class VideoReader:
             self.stoppedIteration = True
             raise StopIteration
 
-        ret, frame = self.read()
+        ret, frame = self.video.read()
         if ret and not self.stoppedIteration:
             return frame
         else:
@@ -31,9 +46,7 @@ class VideoReader:
             self.stoppedIteration = True
             raise StopIteration
 
-    def read(self):
-        return self.video.read()
-
+    ## Video properties
     @property
     def fps(self):
         return self.video.get(cv2.CAP_PROP_FPS)
