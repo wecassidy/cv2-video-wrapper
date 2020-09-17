@@ -6,11 +6,10 @@ them a more Pythonic interface
 """
 
 
-class VideoCapture:
+class VideoCapture(cv2.VideoCapture):
     """
-    Wrapper around cv2.VideoCapture so that it can be used as a
-    context manager. The underlying cv2.VideoCapture is accessible
-    through VideoCapture.video.
+    Extend cv2.VideoCapture so that it can be used as a context
+    manager and an iterator over the frames of the video.
     """
 
     def __init__(self, *args, **kwargs):
@@ -18,18 +17,15 @@ class VideoCapture:
         Set up the VideoCapture. All parameters are forwarded to the
         OpenCV VideoCapture object.
         """
-        self.video = cv2.VideoCapture(*args, **kwargs)
+        super(*args, **kwargs)
         self.stoppedIteration = False
-
-    def read(self):
-        return self.video.read()
 
     ## Context manager
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.video.release()
+        self.release()
         return False
 
     ## Iterable
@@ -37,11 +33,11 @@ class VideoCapture:
         return self
 
     def __next__(self):
-        if not self.video.isOpened():
+        if not self.isOpened():
             self.stoppedIteration = True
             raise StopIteration
 
-        ret, frame = self.video.read()
+        ret, frame = self.read()
         if ret and not self.stoppedIteration:
             return frame
         else:
@@ -52,15 +48,15 @@ class VideoCapture:
     ## Video properties
     @property
     def fps(self):
-        return self.video.get(cv2.CAP_PROP_FPS)
+        return self.get(cv2.CAP_PROP_FPS)
 
     @property
     def width(self):
-        return int(self.video.get(cv2.CAP_PROP_FRAME_WIDTH))
+        return int(self.get(cv2.CAP_PROP_FRAME_WIDTH))
 
     @property
     def height(self):
-        return int(self.video.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        return int(self.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
     @property
     def shape(self):
