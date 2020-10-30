@@ -39,6 +39,27 @@ class VideoCapture(cv2.VideoCapture):
         self.release()
         return False
 
+    ## Random access
+    def __len__(self):
+        l = self.frame_count
+        if l < 0:
+            raise TypeError("VideoCapture source does not support random access")
+        return int(self.frame_count)
+
+    def __getitem__(self, i):
+        if 0 <= i < len(self):
+            self.set(cv2.CAP_PROP_POS_FRAMES, i)
+        elif -len(self) <= i < 0:
+            self.set(cv2.CAP_PROP_POS_FRAMES, len(self) + i)
+        else:
+            raise IndexError(f"index {i} out of range")
+
+        ret, frame = self.read()
+        if ret:
+            return frame
+        else:
+            raise RuntimeError(f"Couldn't read frame {i}")
+
     ## Iterable
     def __iter__(self):
         return self
