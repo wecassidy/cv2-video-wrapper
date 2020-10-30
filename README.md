@@ -31,10 +31,10 @@ Code at [video.py:43-61](video.py#L43-L61) (`VideoCapture.__len__` and `VideoCap
 
 ```python
 with VideoCapture(0) as v:
-	for frame in v:
-        cv2.imshow("Frame", frame)
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
+    for frame in v:
+    cv2.imshow("Frame", frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
 ```
 
 Iterating over a `VideoCapture` gives the frames of the underlying video stream. If a read fails or the video is no longer open, the iterator ends.
@@ -67,7 +67,7 @@ Code at [video.py:81-98](video.py#L81-L98) (`VideoCapture.__getattr__` and `Vide
 
 ```python
 with VideoWriter("file.mp4", cv2.VideoWriter_fourcc(*"mp4v"), 30, (640, 480)) as vw:
-	# etc. etc.
+    # etc. etc.
 ```
 
 Automatically release the resources held by the `VideoWriter` even if an error occurs.
