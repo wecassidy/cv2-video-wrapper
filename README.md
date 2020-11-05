@@ -32,9 +32,9 @@ Code at [video.py:43-61](video.py#L43-L61) (`VideoCapture.__len__` and `VideoCap
 ```python
 with VideoCapture(0) as v:
     for frame in v:
-    cv2.imshow("Frame", frame)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
+        cv2.imshow("Frame", frame)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
 ```
 
 Iterating over a `VideoCapture` gives the frames of the underlying video stream. If a read fails or the video is no longer open, the iterator ends.
