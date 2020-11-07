@@ -131,11 +131,11 @@ class VideoCapture(cv2.VideoCapture):
 
     @property
     def shape(self):
-        return (self.width, self.height)
+        return (self.height, self.width)
 
     @shape.setter
     def set_shape(self, shape):
-        self.width, self.height = shape
+        self.height, self.width = shape
 
 
 class VideoWriter(cv2.VideoWriter):
